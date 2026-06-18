@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Playfair Display", ui-serif, serif;
+  --font-body: "Inter", ui-sans-serif, sans-serif;
+}
+
+:root {
+  --bg-void: #000000;
+  --bg-deep: #0a0000;
+  --bg-burgundy: #1a0008;
+  --bg-dark-red: #2d0010;
+  --red-primary: #c41e3a;
+  --red-bright: #e8203f;
+  --red-dim: rgba(196, 30, 58, 0.4);
+  --gold: #b8860b;
+  --text-white: #ffffff;
+  --text-muted: rgba(255,255,255,0.55);
+  --text-faint: rgba(255,255,255,0.28);
+  --ease-luxury: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html, body {
+  margin: 0;
+  background-color: var(--bg-void);
+  color: var(--text-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Display headings always use Playfair Display */
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* Section label style — small, spaced, red */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--red-primary);
+}
+
+/* Red underline accent */
+.red-line {
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: var(--red-primary);
+  margin: 12px 0;
+}
+
+/* Corner section tag — bottom-right italic label */
+.corner-tag {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(12px, 1.2vw, 16px);
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+}
+
+/* Red CTA button */
+.btn-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--red-primary);
+  color: white;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid var(--red-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  will-change: transform;
+}
+.btn-red:hover { background: var(--red-bright); border-color: var(--red-bright); }
+
+/* Ghost/outline button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid var(--red-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  will-change: transform;
+}
+.btn-ghost:hover { border-color: var(--red-bright); background: rgba(196, 30, 58, 0.1); }
+
+/* GSAP Will-change helper */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* SCROLLBAR HIDE */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Hover Underline */
+.hover-underline {
+  position: relative;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+.hover-underline:hover::after {
+  width: 100%;
+}
