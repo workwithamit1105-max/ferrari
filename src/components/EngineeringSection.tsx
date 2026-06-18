@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function AnimatedStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const numRef = useRef<HTMLSpanElement>(null)
@@ -17,11 +20,10 @@ function AnimatedStat({ value, suffix, label }: { value: number; suffix: string;
         },
         onUpdate: () => {
           if (numRef.current) {
-            if (value % 1 === 0) {
-              numRef.current.innerHTML = Math.round(state.val).toLocaleString()
-            } else {
-              numRef.current.innerHTML = state.val.toFixed(1)
-            }
+            numRef.current.innerHTML =
+              value % 1 === 0
+                ? Math.round(state.val).toLocaleString()
+                : state.val.toFixed(1)
           }
         },
       })
@@ -31,26 +33,11 @@ function AnimatedStat({ value, suffix, label }: { value: number; suffix: string;
 
   return (
     <div>
-      <div
-        style={{
-          fontSize: 'clamp(28px, 4vw, 36px)',
-          color: 'white',
-          fontFamily: 'var(--font-display)',
-        }}
-      >
-        <span ref={numRef}>0</span>
-        {suffix}
+      <div style={{ fontSize: 'clamp(28px, 4vw, 36px)', color: 'white', fontFamily: 'var(--font-display)' }}>
+        <span ref={numRef}>0</span>{suffix}
       </div>
-      <div style={{ width: '32px', height: '1px', background: 'var(--red-primary)', margin: '12px 0' }} />
-      <div
-        style={{
-          fontSize: '10px',
-          letterSpacing: '0.25em',
-          color: 'rgba(255,255,255,0.5)',
-          textTransform: 'uppercase',
-          fontFamily: 'var(--font-body)',
-        }}
-      >
+      <div style={{ width: '32px', height: '1px', background: 'var(--red-primary)', margin: '10px 0' }} />
+      <div style={{ fontSize: '10px', letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', fontFamily: 'var(--font-body)' }}>
         {label}
       </div>
     </div>
@@ -64,7 +51,6 @@ export default function EngineeringSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Parallax Background
       gsap.to(bgRef.current, {
         y: -60,
         ease: 'none',
@@ -76,15 +62,14 @@ export default function EngineeringSection() {
         },
       })
 
-      // Content fade in
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: contentRef.current,
-          start: 'top 80%',
-        },
-      })
-
-      tl.fromTo(contentRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' })
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: contentRef.current, start: 'top 80%' },
+        }
+      )
     }, sectionRef)
     return () => ctx.revert()
   }, [])
@@ -111,24 +96,8 @@ export default function EngineeringSection() {
         />
       </div>
 
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 60%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.15) 60%)', zIndex: 1, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 55%)', zIndex: 1, pointerEvents: 'none' }} />
 
       <div
         ref={contentRef}
@@ -139,47 +108,39 @@ export default function EngineeringSection() {
           width: '100%',
           maxWidth: '900px',
         }}
-        className="will-change-transform"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'white', opacity: 0.6 }}>04</span>
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'white', opacity: 0.5 }}>04</span>
           <div style={{ width: '24px', height: '1px', background: 'var(--red-primary)' }} />
           <span className="section-label">ENGINEERING</span>
         </div>
 
-        <h2
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(40px, 6vw, 88px)',
-            lineHeight: 0.92,
-            letterSpacing: '-0.01em',
-            color: 'white',
-            margin: '0 0 24px 0',
-          }}
-        >
-          PRECISION.
-          <br />
-          <em>ENGINEERED.</em>
+        <h2 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(40px, 6vw, 88px)',
+          lineHeight: 0.92,
+          letterSpacing: '-0.01em',
+          color: 'white',
+          margin: '0 0 24px 0',
+        }}>
+          PRECISION.<br /><em>ENGINEERED.</em>
         </h2>
 
-        <p
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '14px',
-            lineHeight: 1.8,
-            color: 'var(--text-muted)',
-            maxWidth: '500px',
-            margin: '0 0 48px 0',
-          }}
-        >
+        <p style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '14px',
+          lineHeight: 1.8,
+          color: 'var(--text-muted)',
+          maxWidth: '500px',
+          margin: '0 0 48px 0',
+        }}>
           Every component machined beyond tolerance. Every gram interrogated. The PARFMAN powertrain begins where others reach their limit.
         </p>
 
-        {/* CRITICAL FIX 5: 2x2 Grid Layout with Counter Animations */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', maxWidth: '600px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', maxWidth: '560px' }}>
           <AnimatedStat value={820} suffix=" BHP" label="POWER OUTPUT" />
           <AnimatedStat value={2.4} suffix=" SEC" label="0–100 KM/H" />
-          <AnimatedStat value={12} suffix=" CYLINDERS" label="ENGINE TYPE" />
+          <AnimatedStat value={12} suffix=" CYL" label="ENGINE TYPE" />
           <AnimatedStat value={340} suffix=" KM/H" label="TOP SPEED" />
         </div>
       </div>
